@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
     html: function (params) {
       res.send('<ul><li>Jesper</li><li>Kari</li></ul>');
     },
-    json: function (params) {
+    'application/json': function (params) {
       res.send([{name:'Jesper'}, {name: 'Kari'}])
     }
     
