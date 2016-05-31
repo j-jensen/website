@@ -1,20 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+var test = require('../controllers/test');
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.format({
-    text: function (params) {
-      res.send('Users...');
-    },
-    html: function (params) {
-      res.send('<ul><li>Jesper</li><li>Kari</li></ul>');
-    },
-    'application/json': function (params) {
-      res.send([{name:'Jesper'}, {name: 'Kari'}])
-    }
-    
-  });
+      test.getTest(null, function(err, obj){
+            res.render('users',{users: obj});
+      });
 });
 
 module.exports = router;
