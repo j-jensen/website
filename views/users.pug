@@ -3,4 +3,5 @@ extends layout
 block content
     ul
     each user in users
-        li=user.info
+        li
+            a(href='#'+user.id)=user.info
