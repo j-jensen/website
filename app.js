@@ -19,9 +19,7 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

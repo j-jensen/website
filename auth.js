@@ -34,7 +34,7 @@ module.exports.init = function(app) {
     app.use(passport.session());
 
     app.post('/login', passport.authenticate('local', {
-        successRedirect: '/users',
+        successRedirect: '/',
         failureRedirect: '/login'
     }));
 
