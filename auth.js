@@ -1,9 +1,10 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
+var flash = require('express-flash');
 var User = require('./model/user');
 
-module.exports.init = function(app) {
+module.exports.init = function (app) {
     app.use(expressSession({
         secret: 'mySecretKey',
         resave: false,
@@ -11,38 +12,42 @@ module.exports.init = function(app) {
     }));
 
     // Init pp
-    passport.use(new LocalStrategy(function(username, password, done) {
-        console.log('Verify...');
-        return done(null, {
-            id: 1234,
-            username: username
+    passport.use(new LocalStrategy(function (name, password, done) {
+        User.findByNamePassword(name, password, function (err, user) {
+            if (err)
+                return done(err);
+            if (!user)
+                return done(null, false, { message: 'Failed to login.' });
+
+            done(null, user);
         });
     }));
-    passport.serializeUser(function(user, done) {
-        console.log('Serialize...');
-        done(null, user.id);
+    passport.serializeUser(function (user, done) {
+        done(null, user.rowid);
     });
 
-    passport.deserializeUser(function(id, done) {
-        console.log('Deserialize...');
-        done(null, {
-            id: id
+    passport.deserializeUser(function (id, done) {
+        User.findById(id, function (err, user) {
+            done(err, user);
         });
     });
 
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(flash());
+
 
     app.post('/login', passport.authenticate('local', {
         successRedirect: '/',
-        failureRedirect: '/login'
+        failureRedirect: '/login',
+        failureFlash: true
     }));
 
-    app.get('/login', function(req, res) {
+    app.get('/login', function (req, res) {
         res.render('login')
     });
 
-    app.get('/signout', function(req, res) {
+    app.get('/signout', function (req, res) {
         req.logout();
         res.redirect('/');
     });

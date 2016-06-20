@@ -5,7 +5,7 @@ var test = require('../controllers/test');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-      test.getTest(null, function(err, obj){
+      test.getTest( function(err, obj){
             res.render('users',{users: obj});
       });
 });

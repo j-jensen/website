@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 auth.init(app);
 
 app.use('/users', users);
+app.use('/install', require('./routes/install'));
 app.use('/', routes);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -33,6 +34,7 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
 
 // error handlers
 
